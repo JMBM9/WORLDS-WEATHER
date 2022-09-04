@@ -18,11 +18,11 @@ function searchCity(cityname) {
         $("#current").empty();
        let mainDate = moment().format('L');
  //CITY DETAILS
-      let cityNameEl = $("<h2>").text(response.name);
-        let displayMainDate = cityNameEl.append(" " + mainDate);
-        let tempEL = $("<p>").text("Tempraturer: " + response.main.temp);
-        let humEl = $("<p>").text("Humidity: " + response.main.humidity);
-        let windEl = $("<p>").text("Wind Speed: " + response.wind.speed);
+      var cityNameEl = $("<h1>").text(response.name);
+        var displayMainDate = cityNameEl.append(" " + mainDate);
+        var tempEL = $("<h3>").text("Temperature: " + response.main.temp);
+        var humEl = $("<h3>").text("Humidity: " + response.main.humidity);
+        var windEl = $("<h3>").text("Wind Speed: " + response.wind.speed);
         let currentweather = response.weather[0].main;
 //WEATHER CONDITIONALS
         if (currentweather === "Rain") {
@@ -75,24 +75,24 @@ let queryURLUV = "https://api.openweathermap.org/data/2.5/uvi?&appid=ecc0be5fd92
         method: 'GET'
     }).then(function (response) {
        //results
-        let results = response.list;
+        var results = response.list;
      
-        $("#5day").empty();
+        $("#5daystats").empty();
        //search loop
-        for (let i = 0; i < results.length; i += 8) {
+        for (var i = 0; i < results.length; i += 8) {
            
-            let fiveDayDiv = $("<div class='card shadow-lg text-white bg-primary mx-auto mb-10 p-2' style='width: 8.5rem; height: 11rem;'>");
+            var fivedaysstats = $("<div class='card shadow-lg text-white bg-primary mx-auto mb-10 p-2' style='width: 8.5rem; height: 11rem;'>");
             
            
-            let date = results[i].dt_txt;
+            var date = results[i].dt_txt;
             let setD = date.substr(0,10)
             let temp = results[i].main.temp;
-            let hum = results[i].main.humidity;
+            var hum = results[i].main.humidity;
    
           
-            let h5date = $("<h5 class='card-title'>").text(setD);
-            let pTemp = $("<p class='card-text'>").text("Temp: " + temp);;
-            let pHum = $("<p class='card-text'>").text("Humidity " + hum);;
+            var daysDisplay = $("<h5 class='card-title'>").text(setD);
+            let presentTemperature = $("<p class='card-text'>").text("Temperature: " + temp);;
+            var presentHumidity = $("<p class='card-text'>").text("Humidity " + hum);;
 
             let weather = results[i].weather[0].main
 
@@ -117,11 +117,11 @@ let queryURLUV = "https://api.openweathermap.org/data/2.5/uvi?&appid=ecc0be5fd92
             }
 
           
-            fiveDayDiv.append(h5date);
-            fiveDayDiv.append(icon);
-            fiveDayDiv.append(pTemp);
-            fiveDayDiv.append(pHum);
-            $("#5day").append(fiveDayDiv);
+            fivedaysstats.append(daysDisplay);
+            fivedaysstats.append(icon);
+            fivedaysstats.append(presentTemperature);
+            fivedaysstats.append(presentHumidity);
+            $("#5daystats").append(fivedaysstats);
         }
 
     });
@@ -136,12 +136,10 @@ $("#select-city").on("click", function (event) {
   
     event.preventDefault();
  
-    let cityInput = $("#city-input").val().trim();
-
- 
-
-    let textContent = $(this).siblings("input").val();
-    let storearr = [];
+    var cityInput = $("#city-input").val().trim();
+     console.log('looking for city')
+    var textContent = $(this).siblings("input").val();
+    var storearr = [];
     storearr.push(textContent);
     localStorage.setItem('cityName', JSON.stringify(storearr));
   
@@ -151,11 +149,11 @@ $("#select-city").on("click", function (event) {
 
 //searchhistorypage
 function pageLoad () {
-    let lastSearch = JSON.parse(localStorage.getItem("cityName"));
-    let searchDiv = $("<button class='btn border text-muted mt-1 shadow-sm bg-white rounded' style='width: 12rem;'>").text(lastSearch);
-    let psearch = $("<div>");
-    psearch.append(searchDiv)
-    $("#searchhistory").prepend(psearch);
+    var lastSearch = JSON.parse(localStorage.getItem("cityName"));
+    let searchbar = $("<button class='btn border text-muted mt-1 shadow-sm bg-white rounded' style='width: 12rem;'>").text(lastSearch);
+    var pastsearch = $("<div>");
+    pastsearch.append(searchbar)
+    $("#searchhistory").prepend(pastsearch);
 }
 
 
@@ -163,5 +161,6 @@ $("#searchhistory").on('click', '.btn', function(event) {
 event.preventDefault();
     console.log($(this).text());
     searchCity($(this).text());
+    console.log('checking the past.')
 
 });
